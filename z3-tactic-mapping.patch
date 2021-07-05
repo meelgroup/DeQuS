@@ -1,0 +1,84 @@
+diff --git a/src/ast/rewriter/bit_blaster/bit_blaster_rewriter.cpp b/src/ast/rewriter/bit_blaster/bit_blaster_rewriter.cpp
+index 73c2f97..ba1a2ed 100644
+--- a/src/ast/rewriter/bit_blaster/bit_blaster_rewriter.cpp
++++ b/src/ast/rewriter/bit_blaster/bit_blaster_rewriter.cpp
+@@ -24,6 +24,7 @@ Notes:
+ #include "util/ref_util.h"
+ #include "ast/ast_smt2_pp.h"
+ 
++
+ struct blaster_cfg {
+     typedef rational numeral;
+ 
+@@ -223,6 +224,7 @@ struct blaster_rewriter_cfg : public default_rewriter_cfg {
+         sort * b = m().mk_bool_sort();
+         m_out.reset();
+         for (unsigned i = 0; i < bv_size; i++) {
++
+             m_out.push_back(m().mk_fresh_const(nullptr, b));
+             m_newbits.push_back(to_app(m_out.back())->get_decl());
+         }
+@@ -231,6 +233,8 @@ struct blaster_rewriter_cfg : public default_rewriter_cfg {
+         m_keys.push_back(f);
+         m_values.push_back(r);
+         result = r;
++        TRACE("bit_blaster", tout << "mapping:" <<f->get_name()<<":"<<result<<"\n";);
++
+     }
+ 
+ #define MK_UNARY_REDUCE(OP, BB_OP)                              \
+@@ -371,13 +375,20 @@ MK_PARAMETRIC_UNARY_REDUCE(reduce_sign_extend, mk_sign_extend);
+ 
+     br_status reduce_app(func_decl * f, unsigned num, expr * const * args, expr_ref & result, proof_ref & result_pr) {
+         result_pr = nullptr;
+-        TRACE("bit_blaster", tout << f->get_name() << " ";
++        TRACE("bit_blaster", tout << f->get_name() <<" ";
+               for (unsigned i = 0; i < num; ++i) tout << mk_pp(args[i], m()) << " ";
+               tout << "\n";);
+         if (num == 0 && f->get_family_id() == null_family_id && butil().is_bv_sort(f->get_range())) {
+             mk_const(f, result);
+             return BR_DONE;
+         }
++        else
++        {
++            if (num == 0 && f->get_family_id() == null_family_id)
++            {
++                TRACE("bit_blaster", tout << "mapping:" <<f->get_name()<<":bool "<<f->get_name()<<"\n";);
++            }
++        }
+ 
+         if (m().is_eq(f)) {
+             SASSERT(num == 2);
+@@ -408,6 +419,7 @@ MK_PARAMETRIC_UNARY_REDUCE(reduce_sign_extend, mk_sign_extend);
+                 if (!m_blast_add)
+                     return BR_FAILED;
+                 reduce_add(num, args, result);
++                TRACE("bit_blaster", tout << "mapping:" <<f->get_name()<<":bvadd "<<result<<"\n";);
+                 return BR_DONE;
+             case OP_BMUL:
+                 if (!m_blast_mul)
+diff --git a/src/tactic/core/simplify_tactic.cpp b/src/tactic/core/simplify_tactic.cpp
+index ca76caf..8818c79 100644
+--- a/src/tactic/core/simplify_tactic.cpp
++++ b/src/tactic/core/simplify_tactic.cpp
+@@ -63,7 +63,7 @@ struct simplify_tactic::imp {
+             g.update(idx, new_curr, new_pr, g.dep(idx));
+         }
+         TRACE("simplifier", g.display(tout););
+-        g.elim_redundancies();
++        //g.elim_redundancies();
+         TRACE("after_simplifier_detail", g.display_with_dependencies(tout););
+     }
+ 
+diff --git a/src/tactic/core/tseitin_cnf_tactic.cpp b/src/tactic/core/tseitin_cnf_tactic.cpp
+index add9868..5ee733f 100644
+--- a/src/tactic/core/tseitin_cnf_tactic.cpp
++++ b/src/tactic/core/tseitin_cnf_tactic.cpp
+@@ -871,6 +871,7 @@ class tseitin_cnf_tactic : public tactic {
+             if (m_produce_models && !m_fresh_vars.empty()) 
+                 g->add(m_mc.get());
+             g->inc_depth();
++            TRACE("tseitin_cnf", g->display(tout););
+             result.push_back(g.get());
+         }
+     };
