@@ -54,7 +54,6 @@ Output ['1', '8', '13', '20']
 Generated 61 clauses
 Writing header
 please find corresponding dqdimacs file: find_inv_bvsge_bvadd_4bit.dqdimacs
-
 ```
 
 ## Benchmarks
