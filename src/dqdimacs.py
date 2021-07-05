@@ -1,3 +1,6 @@
+## motivated by https://github.com/MarkusRabe/smtlib2qdimacs.
+
+   
 import z3
 from z3  import *
 import math
