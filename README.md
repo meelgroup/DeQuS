@@ -50,7 +50,7 @@ function name:  inv-0
 Arguments ['2', '7', '14', '19', '4', '10', '16', '22']
 Output ['1', '8', '13', '20']
 --------------------------------
-  Generated 61 clauses
+Generated 61 clauses
 Writing header
 please find corresponding dqdimacs file: find_inv_bvsge_bvadd_4bit.dqdimacs
 
@@ -58,7 +58,7 @@ please find corresponding dqdimacs file: find_inv_bvsge_bvadd_4bit.dqdimacs
 
 ## Benchmarks
 
-A single benchmark ` ` is provide. We used SyGuS bit vector theroy benchmarks, avaiable [here] (https://github.com/SyGuS-Org/benchmarks/tree/master/lib/General_Track)
+A single benchmark `find_inv_bvsge_bvadd_4bit.sl` is provide for testing purpose. We used SyGuS bit vector theroy benchmarks, avaiable [here] (https://github.com/SyGuS-Org/benchmarks/tree/master/lib/General_Track)
 
 ## Issues, questions, bugs, etc.
 Please click on "issues" at the top and [create a new issue](https://github.com/meelgroup/manthan/issues). All issues are responded to promptly.

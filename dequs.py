@@ -5,8 +5,8 @@ import math
 import random
 import argparse
 import re
-from smt2 import convert_to_smt
-from dqdimacs import convert_to_qdimacs 
+from src.smt2 import convert_to_smt
+from src.dqdimacs import convert_to_qdimacs 
 
 
 def convert_sl_to_dqbf(file):
