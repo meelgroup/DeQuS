@@ -58,7 +58,7 @@ please find corresponding dqdimacs file: find_inv_bvsge_bvadd_4bit.dqdimacs
 
 ## Benchmarks
 
-A single benchmark `find_inv_bvsge_bvadd_4bit.sl` is provide for testing purpose. We used SyGuS bit vector theroy benchmarks, avaiable [here](https://github.com/SyGuS-Org/benchmarks/tree/master/lib/General_Track).
+A single benchmark `find_inv_bvsge_bvadd_4bit.sl` is provide for the testing purpose. We used SyGuS bit vector theroy benchmarks, available [here](https://github.com/SyGuS-Org/benchmarks/tree/master/lib/General_Track).
 
 ## Issues, questions, bugs, etc.
 Please click on "issues" at the top and [create a new issue](https://github.com/meelgroup/manthan/issues). All issues are responded to promptly.
