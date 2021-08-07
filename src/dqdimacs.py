@@ -192,11 +192,9 @@ def writeQDIMACS(outfile, g, bool_var,bitvec_var,function_name,function_inst):
 
     a_var = "a "+" ".join(a_var_list[np.sort(idx)])+" 0\n"
 
-    e_var_list = np.array(e_var_list)
+    d_var = []
 
-    _, idx = np.unique(e_var_list, return_index=True)
-
-    e_var = "e "+" ".join(e_var_list[np.sort(idx)])+" 0\n"
+    
     
         
     
@@ -212,7 +210,25 @@ def writeQDIMACS(outfile, g, bool_var,bitvec_var,function_name,function_inst):
         print("Output",each_function_e[function])
         for e in each_function_e[function]:
             write_str_func += "d %s %s 0\n" %(str(e),' '.join([str(a) for a in each_function_a[function]]))
+            d_var.append(int(e))
         print("--------------------------------")
+
+    d_var = np.array(d_var)
+    a_var_list = a_var_list.astype(int)
+
+    e_var_list = []
+    print(d_var)
+    print(a_var_list)
+
+    qdimacs_var = 1
+    while qdimacs_var <= max_var:
+        if (qdimacs_var not in d_var) and (qdimacs_var not in a_var_list):
+            e_var_list.append(qdimacs_var)
+        qdimacs_var += 1
+
+    
+
+    e_var = "e "+' '.join([str(a) for a in e_var_list])+" 0\n"
 
     print('  Generated ' + str(clause_num) + ' clauses')
     print('Writing header')
@@ -220,6 +236,7 @@ def writeQDIMACS(outfile, g, bool_var,bitvec_var,function_name,function_inst):
     textFile = open(outfile, "w")
     textFile.write('p cnf {} {}\n'.format(max_var,clause_num))
     textFile.write(a_var)
+    textFile.write(e_var)
     textFile.write(write_str_func)
     textFile.write('0\n'.join(matrix))
     textFile.write("0 \n")
